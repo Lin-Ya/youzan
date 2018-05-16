@@ -3,6 +3,7 @@ import 'css/common.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
+import Foot from 'components/Foot.vue'
 
 //引入mint-ui使用无限滚动
 import { InfiniteScroll } from 'mint-ui';
@@ -17,9 +18,9 @@ let app = new Vue({
         loading: false,
         listsEnd: false
     },
-    // comments: {
-
-    // },
+    comments: {
+        Foot
+    },
     created() {
         this.getLists()
     },
