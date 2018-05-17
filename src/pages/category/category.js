@@ -21,7 +21,7 @@ new Vue({
     },
     created() {
         this.getTopList()
-        this.getSubList(-1)
+        this.getSubList(0)
     },
     methods: {
         getTopList() {
@@ -34,8 +34,8 @@ new Vue({
             this.currentIndex = index
             this.getSubList(id)
         },
-        getSubList(id) {
-            if(id === -1){
+        getSubList(index,id) {
+            if (index === 0){
                 axios.post(url.rank).then((res)=>{
                     this.rank = res.data.data
                 })
