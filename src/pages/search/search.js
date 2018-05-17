@@ -4,6 +4,7 @@ import url from 'js/api.js'
 import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
+import mixin from 'js/mixin.js'
 
 let { id, keyword } = qs.parse(location.search.substr(1))
 new Vue({
@@ -23,5 +24,6 @@ new Vue({
                 console.log(this.searchList)
             })
         }
-    }
+    },
+    mixins: [mixin]
 })
