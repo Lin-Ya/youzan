@@ -30,16 +30,16 @@ new Vue({
                 this.topList = res.data.lists
             })
         },
-        switchTab(id,index) {
+        switchTab(id, index) {
             this.currentIndex = index
             this.getSubList(id)
         },
-        getSubList(index,id) {
-            if (index === 0){
-                axios.post(url.rank).then((res)=>{
+        getSubList(index, id) {
+            if (index === 0) {
+                axios.post(url.rank).then((res) => {
                     this.rank = res.data.data
                 })
-            }else {
+            } else {
                 axios.post(url.subList, {
                     id
                 }).then((res) => {
@@ -50,5 +50,16 @@ new Vue({
                 })
             }
         },
+    },
+    filters: {
+        number(price) {
+            let priceStr = '' + price
+            if (priceStr.indexOf('.') > -1) {
+                let arr = priceStr.split('.')
+                return arr[0] + '.' + (arr[1] + '0').substr(0, 2)
+            } else {
+                return priceStr + '.00'
+            }
+        }
     }
 })
