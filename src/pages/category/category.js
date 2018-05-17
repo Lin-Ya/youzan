@@ -50,6 +50,9 @@ new Vue({
                 })
             }
         },
+        goSearch(id,keyword){
+            location.href = `search.html?id=${id}&keyword=${keyword}`
+        }
     },
     filters: {
         number(price) {
