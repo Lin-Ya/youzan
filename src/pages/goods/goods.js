@@ -27,7 +27,9 @@ new Vue({
         skuType: 0,
         showSku: false,
         skuNum: 0,
-        buyNum: 1
+        buyNum: 1,
+        addCart: false,
+        showMessage: false
     },
     components: {
         Swiper
@@ -66,6 +68,19 @@ new Vue({
         setBuyNum(num){
             if(num<0&&this.buyNum===1){return}
             this.buyNum = Number.parseInt(this.buyNum) + num
+        },
+        addToCart(id, buyNum){
+            axios.post(url.addCart,{id,number: buyNum}).then(res=>{
+                if(res.data.status === 200){
+                    this.showSku = false
+                    this.addCart = true
+                    this.showMessage = true                    
+                    setTimeout(()=>{
+                        this.showMessage = false
+                    },1500)
+                }
+            })
+
         }
     },
     watch: {

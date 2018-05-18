@@ -8,7 +8,8 @@ let url = {
     rank: '/category/rank',
     search: '/search/list',
     details: '/goods/details',
-    dealLists: '/goods/deal'
+    dealLists: '/goods/deal',
+    addCart: '/cart/add'
 }
 for (key in url) {
     url[key] = host + url[key]
