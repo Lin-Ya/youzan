@@ -263,6 +263,7 @@
       </div>
       <!-- 阴影层 -->
       <div id="yFzBKP9GDL" 
+          @click="showSku = false"
           v-show="showSku"      
       style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;"></div>
       <!-- 规格确认弹窗 popout -->
@@ -285,7 +286,7 @@
                 <div class="original-price vertical-middle font-size-14 line-through">108</div>
               </div>
             </div>
-            <div class="js-cancel sku-cancel">
+            <div class="js-cancel sku-cancel" @click="showSku = false">
               <div class="cancel-img"></div>
             </div>
           </div>
@@ -316,16 +317,16 @@
                 <dd class="sku-quantity-contaienr">
                   <dl class="clearfix">
                     <div class="quantity">
-                      <button class="minus disabled" type="button" disabled="true"></button>
-                      <input type="text" class="txt" pattern="[0-9]*" value="1">
+                      <button class="minus" :class="{disabled: buyNum===1}" type="button"></button>
+                      <input type="text" class="txt" pattern="[0-9]*" v-model="buyNum">
                       <button class="plus" type="button"></button>
-                      <div class="response-area response-area-minus"></div>
-                      <div class="response-area response-area-plus"></div>
+                      <div class="response-area response-area-minus" @click="setBuyNum(-1)"></div>
+                      <div class="response-area response-area-plus" @click="setBuyNum(1)"></div>
                     </div>
                   </dl>
                 </dd>
                 <dt class="other-info">
-                  <div class="stock">剩余450件
+                  <div class="stock">剩余{{details.remain}}件
                   </div>
                 </dt>
               </dl>

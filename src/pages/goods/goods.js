@@ -26,7 +26,8 @@ new Vue({
         bannerLists: null,
         skuType: 0,
         showSku: false,
-        skuNum: 0
+        skuNum: 0,
+        buyNum: 1
     },
     components: {
         Swiper
@@ -61,6 +62,10 @@ new Vue({
         chooseSku(num) {
             this.showSku = true
             this.skuNum = num
+        },
+        setBuyNum(num){
+            if(num<0&&this.buyNum===1){return}
+            this.buyNum = Number.parseInt(this.buyNum) + num
         }
     },
     watch: {
