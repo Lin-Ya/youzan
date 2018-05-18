@@ -6,7 +6,9 @@ let url = {
     topList: '/category/topList',
     subList: '/category/subList',
     rank: '/category/rank',
-    search: '/search/list'
+    search: '/search/list',
+    details: '/goods/details',
+    dealLists: '/goods/deal'
 }
 for (key in url) {
     url[key] = host + url[key]
