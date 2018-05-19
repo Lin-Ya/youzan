@@ -30,7 +30,7 @@
                         <div class="block block-order block-cart" v-for="shop in cartList">
                             <div class="header">
                                 <div class="select-group js-select-group">
-                                    <span class="check checked"></span>
+                                    <span class="check" :class="{checked: shop.checked}" @click="shopcheck(shop)"></span>
                                 </div>
                                 <a class="shop-title">
                                 <i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
@@ -48,7 +48,7 @@
                                         <div>
                                             <div class="check-container">
                                                 <span class="check" 
-                                                @click="check(good)"    
+                                                @click="goodcheck(shop,good)"    
                                                 :class="{checked:good.checked}"></span>
                                             </div>
                                             <div class="name-card clearfix">
@@ -151,7 +151,7 @@
                         </div>
                         <div class="bottom-cart clear-fix">
                             <div class="select-all">
-                                <span class="check"></span> 全选
+                                <span class="check" @click="selectAll()" :class="{checked: allChecked}"></span> 全选
                             </div>
                             <!-- 显示状态 -->
                             <div class="total-price">
