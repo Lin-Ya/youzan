@@ -11,13 +11,23 @@ import mixin from 'js/mixin.js'
 new Vue({
     el: '.container',
     data: {
-        cartList: null
+        cartList: null,
+        editing: false
     },
     methods: {
         getCartList() {
             axios.post(url.cartList).then(res => {
-                this.cartList = res.data.cartList
+                let list = res.data.cartList
+                list.forEach(shop=>{
+                    shop.goodsList.forEach(good=>{
+                        good.checked = false
+                    })
+                })
+                this.cartList = list
             })
+        },
+        check(obj){
+            obj.checked = !obj.checked
         }
     },
     mixins: [mixin],
