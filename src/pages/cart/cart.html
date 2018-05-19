@@ -149,7 +149,7 @@
                                 <span class="check" @click="selectAll()" :class="{checked: allChecked}"></span> 全选
                             </div>
                             <!-- 显示状态 -->
-                            <div class="total-price" v-show="!goodEditing">
+                            <div class="total-price" v-show="!editingShop">
                                 合计：¥
                                 <span class="js-total-price" style="color: rgb(255, 102, 0);">{{total|currency}}</span>
                                 <p class="c-gray-dark">不含运费</p>
@@ -158,7 +158,7 @@
                                 结算 ({{selectLists.length}})
                             </button>
                             <!-- 编辑状态 -->
-                            <button href="javascript:;" v-show="goodEditing" class="j-delete-goods btn font-size-14 btn-red">删除
+                            <button href="javascript:;" :disabled="!selectLists.length" v-show="editingShop" class="j-delete-goods btn font-size-14 btn-red">删除
                             </button>
                         </div>
                     </div>

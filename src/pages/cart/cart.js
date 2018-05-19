@@ -13,7 +13,8 @@ new Vue({
     data: {
         cartList: null,
         total: 0,
-        goodEditing: false
+        editingShop: null,
+        editingIndex: -1
     },
     methods: {
         getCartList() {
@@ -23,8 +24,10 @@ new Vue({
                     shop.checked = true
                     shop.editing = false
                     shop.statusMsg = '编辑'
+                    shop.removeChecked =false
                     shop.goodsList.forEach(good => {
                         good.checked = true
+                        good.removeChecked = false                        
                     })
                 })
                 this.cartList = list
@@ -47,7 +50,8 @@ new Vue({
         },
         editing(shop, shopIndex) {
             shop.editing = !shop.editing
-            this.goodEditing = !shop.editing
+            this.editingShop = shop.editing?shop:null
+            this.editingIndex = shop.editing?shopIndex:-1
             shop.statusMsg = shop.editing ? '完成' : '编辑'
             this.cartList.forEach((item, i) => {
                 if(i !== shopIndex){
@@ -94,6 +98,9 @@ new Vue({
                 return arr
             }
             return []
+        },
+        removeList(){
+
         }
     },
     created() {
