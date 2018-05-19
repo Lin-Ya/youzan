@@ -27,34 +27,29 @@
                     <!---->
                     <!---->
                     <div class="js-shop-list shop-list">
-                        <div class="block block-order block-cart" v-for="shop in cartList">
+                        <div class="block block-order block-cart" v-for="(shop,shopIndex) in cartList">
                             <div class="header">
                                 <div class="select-group js-select-group">
                                     <span class="check" :class="{checked: shop.checked}" @click="shopcheck(shop)"></span>
                                 </div>
                                 <a class="shop-title">
-                                <i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
-                                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list">
+                                    <i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
+                                <a href="javascript:;" @click="editing(shop,shopIndex)" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list">
                                     <!---->
-                                    编辑
+                                    {{shop.statusMsg}}
                                 </a>
                             </div>
                             <!---->
                             <div>
                                 <ul class="js-list block block-list block-list-cart border-0">
-                                    <li class="block-item block-item-cart" 
-                                        
-                                        v-for="(good,goodIndex) in shop.goodsList">
+                                    <li class="block-item block-item-cart" :class="{editing:shop.editing}" v-for="(good,goodIndex) in shop.goodsList">
                                         <div>
                                             <div class="check-container">
-                                                <span class="check" 
-                                                @click="goodcheck(shop,good)"    
-                                                :class="{checked:good.checked}"></span>
+                                                <span class="check" @click="goodcheck(shop,good)" :class="{checked:good.checked}"></span>
                                             </div>
                                             <div class="name-card clearfix">
                                                 <a :href="'goods.html?id='+good.id" class="thumb js-goods-link">
-                                                    <img
-                                                        class="js-lazy" :src="good.image">
+                                                    <img class="js-lazy" :src="good.image">
                                                     <!---->
                                                 </a>
                                                 <div class="detail">
@@ -67,13 +62,13 @@
                                                         {{good.sku}}
                                                     </p>
                                                     <!-- 显示状态 -->
-                                                    <div class="num">
+                                                    <div class="num" v-show="!shop.editing">
                                                         ×
                                                         <span class="num-txt">{{good.number}}</span>
                                                         <!---->
                                                     </div>
                                                     <!-- 编辑状态 -->
-                                                    <div class="num" style="display: none;">
+                                                    <div class="num" v-show="shop.editing">
                                                         <!---->
                                                         <div class="quantity">
                                                             <button type="button" class="minus"></button>
@@ -112,8 +107,8 @@
                                         </div>
                                         <div class="name-card clearfix">
                                             <a href="https://h5.youzan.com/v2/showcase/goods?alias=36co1k2m80lmu" class="thumb js-goods-link">
-                                                <img data-src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg!200x200.jpg"
-                                                    class="js-lazy" src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg?imageView2/2/w/200/h/200/q/75/format/webp">
+                                                <img data-src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg!200x200.jpg" class="js-lazy"
+                                                    src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg?imageView2/2/w/200/h/200/q/75/format/webp">
                                                 <!---->
                                             </a>
                                             <div class="detail">
@@ -154,7 +149,7 @@
                                 <span class="check" @click="selectAll()" :class="{checked: allChecked}"></span> 全选
                             </div>
                             <!-- 显示状态 -->
-                            <div class="total-price">
+                            <div class="total-price" v-show="!goodEditing">
                                 合计：¥
                                 <span class="js-total-price" style="color: rgb(255, 102, 0);">{{total|currency}}</span>
                                 <p class="c-gray-dark">不含运费</p>
@@ -163,7 +158,7 @@
                                 结算 ({{selectLists.length}})
                             </button>
                             <!-- 编辑状态 -->
-                            <button href="javascript:;" style="display: none" class="j-delete-goods btn font-size-14 btn-red">删除
+                            <button href="javascript:;" v-show="goodEditing" class="j-delete-goods btn font-size-14 btn-red">删除
                             </button>
                         </div>
                     </div>

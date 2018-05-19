@@ -12,65 +12,79 @@ new Vue({
     el: '.container',
     data: {
         cartList: null,
-        editing: false,
-        total: 0
+        total: 0,
+        goodEditing: false
     },
     methods: {
         getCartList() {
             axios.post(url.cartList).then(res => {
                 let list = res.data.cartList
-                list.forEach(shop=>{
+                list.forEach(shop => {
                     shop.checked = true
-                    shop.goodsList.forEach(good=>{
+                    shop.editing = false
+                    shop.statusMsg = '编辑'
+                    shop.goodsList.forEach(good => {
                         good.checked = true
                     })
                 })
                 this.cartList = list
             })
         },
-        goodcheck(shop,good){
+        goodcheck(shop, good) {
             good.checked = !good.checked
-            shop.checked = shop.goodsList.every(good=>{
+            shop.checked = shop.goodsList.every(good => {
                 return good.checked
             })
         },
-        shopcheck(shop){
+        shopcheck(shop) {
             shop.checked = !shop.checked
-            shop.goodsList.forEach(good=>{
-                good.checked = shop.checked                
+            shop.goodsList.forEach(good => {
+                good.checked = shop.checked
             })
         },
-        selectAll(){
+        selectAll() {
             this.allChecked = !this.allChecked
+        },
+        editing(shop, shopIndex) {
+            shop.editing = !shop.editing
+            this.goodEditing = !shop.editing
+            shop.statusMsg = shop.editing ? '完成' : '编辑'
+            this.cartList.forEach((item, i) => {
+                if(i !== shopIndex){
+                    item.editing = false
+                    item.statusMsg = shop.editing ? '' :'编辑'
+                }
+            })
+
         }
     },
     mixins: [mixin],
     computed: {
         allChecked: {
             get() {
-                if(this.cartList&&this.cartList.length){
-                    return this.cartList.every(shop=>{
+                if (this.cartList && this.cartList.length) {
+                    return this.cartList.every(shop => {
                         return shop.checked
                     })
                 }
                 return false
             },
             set(val) {
-                this.cartList.forEach(shop=>{
+                this.cartList.forEach(shop => {
                     shop.checked = val;
-                    shop.goodsList.forEach(good=>{
+                    shop.goodsList.forEach(good => {
                         good.checked = val
                     })
                 })
             }
         },
-        selectLists(){
-            if(this.cartList&&this.cartList.length){
+        selectLists() {
+            if (this.cartList && this.cartList.length) {
                 let arr = []
                 let total = 0
-                this.cartList.forEach(shop=>{
-                    shop.goodsList.forEach(good=>{
-                        if(good.checked){
+                this.cartList.forEach(shop => {
+                    shop.goodsList.forEach(good => {
+                        if (good.checked) {
                             arr.push(good)
                             total += good.price * good.number
                         }
