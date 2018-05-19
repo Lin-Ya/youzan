@@ -12,7 +12,8 @@ new Vue({
     el: '.container',
     data: {
         cartList: null,
-        editing: false
+        editing: false,
+        total: 0
     },
     methods: {
         getCartList() {
@@ -36,7 +37,7 @@ new Vue({
         shopcheck(shop){
             shop.checked = !shop.checked
             shop.goodsList.forEach(good=>{
-                good.checked = !good.checked                
+                good.checked = shop.checked                
             })
         },
         selectAll(){
@@ -62,6 +63,23 @@ new Vue({
                     })
                 })
             }
+        },
+        selectLists(){
+            if(this.cartList&&this.cartList.length){
+                let arr = []
+                let total = 0
+                this.cartList.forEach(shop=>{
+                    shop.goodsList.forEach(good=>{
+                        if(good.checked){
+                            arr.push(good)
+                            total += good.price * good.number
+                        }
+                    })
+                })
+                this.total = total
+                return arr
+            }
+            return []
         }
     },
     created() {

@@ -73,11 +73,11 @@
                                                         <!---->
                                                     </div>
                                                     <!-- 编辑状态 -->
-                                                    <div class="num">
+                                                    <div class="num" style="display: none;">
                                                         <!---->
                                                         <div class="quantity">
-                                                            <button type="button" class="minus disabled"></button>
-                                                            <input type="text" pattern="[0-9]*" class="txt" value="1">
+                                                            <button type="button" class="minus"></button>
+                                                            <input type="text" pattern="[0-9]*" class="txt" :value="good.number">
                                                             <button type="button" class="plus "></button>
                                                             <div class="response-area response-area-minus"></div>
                                                             <div class="response-area response-area-plus"></div>
@@ -85,7 +85,7 @@
                                                     </div>
                                                     <div class="price c-orange">
                                                         ¥
-                                                        <span>189.00 </span>
+                                                        <span>{{good.price | currency}} </span>
                                                     </div>
                                                 </div>
                                                 <div class="error-box"></div>
@@ -156,11 +156,11 @@
                             <!-- 显示状态 -->
                             <div class="total-price">
                                 合计：¥
-                                <span class="js-total-price" style="color: rgb(255, 102, 0);">684.99</span>
+                                <span class="js-total-price" style="color: rgb(255, 102, 0);">{{total|currency}}</span>
                                 <p class="c-gray-dark">不含运费</p>
                             </div>
-                            <button href="javascript:;" class="js-go-pay btn btn-orange-dark font-size-14">
-                                结算 (3)
+                            <button href="javascript:;" :disabled="!selectLists.length" class="js-go-pay btn btn-orange-dark font-size-14">
+                                结算 ({{selectLists.length}})
                             </button>
                             <!-- 编辑状态 -->
                             <button href="javascript:;" style="display: none" class="j-delete-goods btn font-size-14 btn-red">删除
