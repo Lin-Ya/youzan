@@ -9,7 +9,8 @@ let url = {
     search: '/search/list',
     details: '/goods/details',
     dealLists: '/goods/deal',
-    addCart: '/cart/add'
+    addCart: '/cart/add',
+    cartList: '/cart/list'
 }
 for (key in url) {
     url[key] = host + url[key]
