@@ -7,6 +7,7 @@ import axios from 'axios'
 import url from 'js/api.js'
 import Foot from 'components/Foot.vue'
 import mixin from 'js/mixin.js'
+import Velocity from 'velocity-animate'
 
 new Vue({
     el: '.container',
@@ -74,54 +75,54 @@ new Vue({
         },
         singleDelete(shop, shopIndex, good, goodIndex) {
             this.removeTips = true
-            this.removeDate = { shop, shopIndex, good, goodIndex}
+            this.removeDate = { shop, shopIndex, good, goodIndex }
             this.removeMsg = '确定要删除该商品吗？'
         },
-        multiDelete(){
+        multiDelete() {
             this.removeTips = true
             this.removeMsg = `确定将所选 ${this.removeLists.length} 个商品删除？`
         },
-        deleteGoods(){
-            if (this.removeMsg === '确定要删除该商品吗？'){
-                let {shop,shopIndex,good,goodIndex} = this.removeDate
-                axios.post(url.delete,{
+        deleteGoods() {
+            if (this.removeMsg === '确定要删除该商品吗？') {
+                let { shop, shopIndex, good, goodIndex } = this.removeDate
+                axios.post(url.delete, {
                     id: good.id
-                }).then(res=>{
-                    shop.goodsList.splice(goodIndex,1)
-                    if(!shop.goodsList.length){
+                }).then(res => {
+                    shop.goodsList.splice(goodIndex, 1)
+                    if (!shop.goodsList.length) {
                         this.deleteShop()
                     }
-                    this.removeTips = false                            
+                    this.removeTips = false
                 })
-            }else {
+            } else {
                 let ids = []
-                this.removeLists.forEach(good=>{
+                this.removeLists.forEach(good => {
                     ids.push(good.id)
                 })
-                axios.post(url.delete,{
-                    id:ids
-                }).then(res=>{
-                    if(this.editingShop.goodsList.length === this.removeLists.length){
+                axios.post(url.delete, {
+                    id: ids
+                }).then(res => {
+                    if (this.editingShop.goodsList.length === this.removeLists.length) {
                         this.deleteShop()
-                    }else {
+                    } else {
                         let _goodsList = []
-                        this.editingShop.goodsList.forEach(good=>{
-                            if(!good.removeChecked){
+                        this.editingShop.goodsList.forEach(good => {
+                            if (!good.removeChecked) {
                                 _goodsList.push(good)
                             }
                         })
                         this.cartList[this.editingIndex].goodsList = _goodsList
                     }
-                    this.removeTips = false                    
+                    this.removeTips = false
                 })
             }
         },
-        deleteShop(){
-            this.cartList.splice(this.editingIndex,1)
+        deleteShop() {
+            this.cartList.splice(this.editingIndex, 1)
             //把其他商铺的状态切换回来
             this.editingShop = null
             this.editingIndex = -1
-            this.cartList.forEach(shop=>{
+            this.cartList.forEach(shop => {
                 shop.statusMsg = '编辑'
                 shop.editing = false
             })
@@ -135,13 +136,28 @@ new Vue({
             })
         },
         reduce(good) {
-            if(good.number ===1){return}
+            if (good.number === 1) { return }
             axios.post(url.cartReduce, {
                 id: good.id,
                 nuber: -1
-            }).then(res=>{
+            }).then(res => {
                 good.number--
             })
+        },
+        start(e, good) {
+            good.touchStart = e.changedTouches[0].clientX
+        },
+        end(e, shopIndex, good, goodIndex) {
+            let target = this.$refs[`goods-${shopIndex}-${goodIndex}`]
+            let touchEnd = e.changedTouches[0].clientX,left = ''
+            if (good.touchStart - touchEnd > 50) {
+                left = '-80px'
+            } else if (good.touchStart - touchEnd <-50){
+                left = '0px'
+            }
+            Velocity(target,{
+                left
+            }) //模板字符串
         }
     },
     mixins: [mixin],
@@ -205,10 +221,10 @@ new Vue({
                     }
                 })
                 return arr
-            }else if(this.cartList) {
-                this.cartList.forEach(shop=>{
+            } else if (this.cartList) {
+                this.cartList.forEach(shop => {
                     shop.removeChecked = false
-                    shop.goodsList.forEach(good=>{
+                    shop.goodsList.forEach(good => {
                         good.removeChecked = false
                     })
                 })
