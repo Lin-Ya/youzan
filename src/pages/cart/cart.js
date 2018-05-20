@@ -16,7 +16,8 @@ new Vue({
         editingShop: null,
         editingIndex: -1,
         removeTips: false,
-        removeDate: null
+        removeDate: null,
+        removeMsg: ''
     },
     methods: {
         getCartList() {
@@ -71,24 +72,52 @@ new Vue({
                 }
             })
         },
-        showDelete(shop, shopIndex, good, goodIndex) {
+        singleDelete(shop, shopIndex, good, goodIndex) {
             this.removeTips = true
             this.removeDate = { shop, shopIndex, good, goodIndex}
+            this.removeMsg = '确定要删除该商品吗？'
+        },
+        multiDelete(){
+            this.removeTips = true
+            this.removeMsg = `确定将所选 ${this.removeLists.length} 个商品删除？`
         },
         deleteGoods(){
-            let {shop,shopIndex,good,goodIndex} = this.removeDate
-            axios.post(url.delete,{
-                id: good.id
-            }).then(res=>{
-                shop.goodsList.splice(goodIndex,1)
-                if(!shop.goodsList.length){
-                    this.deleteShop(shopIndex)
-                }
-                this.removeTips = false
-            })
+            if (this.removeMsg === '确定要删除该商品吗？'){
+                let {shop,shopIndex,good,goodIndex} = this.removeDate
+                axios.post(url.delete,{
+                    id: good.id
+                }).then(res=>{
+                    shop.goodsList.splice(goodIndex,1)
+                    if(!shop.goodsList.length){
+                        this.deleteShop()
+                    }
+                    this.removeTips = false                            
+                })
+            }else {
+                let ids = []
+                this.removeLists.forEach(good=>{
+                    ids.push(good.id)
+                })
+                axios.post(url.delete,{
+                    id:ids
+                }).then(res=>{
+                    if(this.editingShop.goodsList.length === this.removeLists.length){
+                        this.deleteShop()
+                    }else {
+                        let _goodsList = []
+                        this.editingShop.goodsList.forEach(good=>{
+                            if(!good.removeChecked){
+                                _goodsList.push(good)
+                            }
+                        })
+                        this.cartList[this.editingIndex].goodsList = _goodsList
+                    }
+                    this.removeTips = false                    
+                })
+            }
         },
-        deleteShop(shopIndex){
-            this.cartList.splice(shopIndex,1)
+        deleteShop(){
+            this.cartList.splice(this.editingIndex,1)
             //把其他商铺的状态切换回来
             this.editingShop = null
             this.editingIndex = -1
@@ -176,6 +205,13 @@ new Vue({
                     }
                 })
                 return arr
+            }else if(this.cartList) {
+                this.cartList.forEach(shop=>{
+                    shop.removeChecked = false
+                    shop.goodsList.forEach(good=>{
+                        good.removeChecked = false
+                    })
+                })
             }
             return []
         }
