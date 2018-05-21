@@ -10,6 +10,28 @@ class Cart {
             number: 1
         })
     }
+    static reduce(good) {
+        return fetch(url.cartReduce, {
+            id: good.id,
+            number: -1
+        })
+    }
+    static getCartList() {
+        return fetch(url.cartList,null)
+    }
+    static deleteGoods(id, removeLists) {
+        let ids = []
+        if (removeLists) {
+            removeLists.forEach(good => {
+                ids.push(good.id)
+            })
+        } else {
+            ids.push(id)
+        }
+        return fetch(url.delete, {
+            id: ids
+        })
+    }
 }
 
 export default Cart
