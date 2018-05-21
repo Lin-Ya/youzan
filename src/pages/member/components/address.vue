@@ -1,6 +1,6 @@
 <template>
   <div>
-    地址管理
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,7 +13,7 @@
 export default {
   data(){
     return {
-      
+
     }
   }
 }

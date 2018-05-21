@@ -71,7 +71,7 @@
           </a>
         </div>
         <div class="block block-list list-vertical">
-          <router-link to="/adress" class="block-item link clearfix ico-setting js-login" target="_self">
+          <router-link to="/address" class="block-item link clearfix ico-setting js-login" target="_self">
             <p class="title-info c-black font-size-14">收货地址管理</p>
           </router-link>
           <a class="block-item link clearfix ico-help" href="http://bbs.youzan.com/home.php?mod=space&amp;do=thread&amp;view=me&amp;order=lastpost&amp;mobile=2&amp;fid=85&amp;filter=common&amp;in_app_type=weixin" target="_blank">

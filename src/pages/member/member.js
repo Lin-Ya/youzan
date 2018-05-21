@@ -9,9 +9,19 @@ Vue.use(Router)
 let routes = [{
     path: '/',
     components: require('./components/member.vue')
-},{
-    path: '/adress',
-    components: require('./components/address.vue')
+}, {
+    path: '/address',
+    components: require('./components/address.vue'),
+    children: [{
+        path: '',
+        components: require('./components/all.vue')
+    }, {
+        path: 'all',
+        components: require('./components/all.vue')
+    }, {
+        path: 'form',
+        components: require('./components/form.vue')
+    }]
 }]
 
 let router = new Router({
@@ -20,5 +30,5 @@ let router = new Router({
 new Vue({
     el: '#app',
     router
-    
+
 })
