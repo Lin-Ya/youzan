@@ -144,7 +144,7 @@ new Vue({
             }
             Velocity(target, {
                 left
-            }) //模板字符串
+            }) //模板字符串       
         }
     },
     mixins: [mixin],
