@@ -13,7 +13,12 @@ let url = {
     cartList: '/cart/list',
     cartAdd: '/cart/add',
     cartReduce: '/cart/reduce',
-    delete: '/cart/delete'
+    delete: '/cart/delete',
+    addressList: '/address/list',
+    addressAdd: '/address/add',
+    addressRemove: '/address/remove',
+    addressUpdate: '/address/update',
+    addressSetDefault: '/address/setDefault'
 }
 for (key in url) {
     url[key] = host + url[key]

@@ -1,13 +1,13 @@
 <template>
   <div class="container " style="min-height: 597px;">
-    <div class="block-list address-list section section-first js-no-webview-block">
-      <a class="block-item js-address-item address-item" @click="toEdit">
-        <div class="address-title">tony 13112345678</div>
-        <p>广东省珠海市香洲区南方软件园</p>
-      </a>
-      <a class="block-item js-address-item address-item address-item-default"@click="toEdit">
-        <div class="address-title">tony 13112345678</div>
-        <p>北京市北京市东城区天安门</p>
+    <div class="block-list address-list section section-first js-no-webview-block" v-if="addressList">
+      <a class="block-item js-address-item address-item"
+        @click="toEdit" 
+        :class="{'address-item-default': list.isDefault}"
+        v-for="list in addressList" 
+        :key="list.id">
+        <div class="address-title">{{list.name}} {{list.tel}}</div>
+        <p>{{list.provinceName}}{{list.cityName}}{{list.districtName}}{{list.address}}</p>
       </a>
     </div>
     <div class="block stick-bottom-row center">
@@ -24,16 +24,25 @@
 </style>
 
 <script>
+import Address from 'js/addressService.js'
 export default {
     data(){
         return {
-            
+            addressList: null
         }
     },
     methods: {
         toEdit(){
             this.$router.push({path:'/address/form'})
+        },
+        getList(){
+            Address.list().then(res=>{
+                this.addressList = res.data.list
+            })
         }
+    },
+    created(){
+        this.getList()
     }
 }
 </script>
