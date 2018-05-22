@@ -17,9 +17,11 @@ let routes = [{
         components: require('./components/all.vue')
     }, {
         path: 'all',
+        name: 'all',
         components: require('./components/all.vue')
     }, {
         path: 'form',
+        name:'form',
         components: require('./components/form.vue')
     }]
 }]
