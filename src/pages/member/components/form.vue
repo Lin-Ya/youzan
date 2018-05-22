@@ -37,10 +37,10 @@
         <div class="block section js-save block-control-btn" @click="add()">
             <div class="block-item c-blue center">保存</div>
         </div>
-        <div class="block section js-delete block-control-btn" v-show="type === 'edit'">
+        <div class="block section js-delete block-control-btn" v-show="type === 'edit'" @click="remove()">
             <div class="block-item c-red center">删除</div>
         </div>
-        <div class="block stick-bottom-row center js-save-default" v-show="type === 'edit'">
+        <div class="block stick-bottom-row center js-save-default" v-show="type === 'edit'" @click="setDefault()">
             <button class="btn btn-standard js-save-default-btn">设为默认收货地址</button>
         </div>
     </div>
@@ -72,7 +72,7 @@ export default {
   },
   watch: {
     provinceValue(val) {
-      if (this.provinceValue == -1) {
+      if (this.provinceValue === -1) {
         return;
       }
       let list = this.addressData.list;
@@ -82,6 +82,9 @@ export default {
       this.cityList = list[index].children;
       this.cityValue = -1;
       this.districtValue = -1;
+      if (this.type === "edit") {
+        this.cityValue = parseInt(this.instance.cityValue);
+      }
     },
     cityValue(val) {
       if (this.cityValue == -1) {
@@ -93,15 +96,9 @@ export default {
       });
       this.districtList = list[index].children;
       this.districtValue = -1;
-    },
-    districtValue(val) {
-      if (this.cityValue == -1) {
-        return;
+      if (this.type === "edit") {
+        this.districtValue = parseInt(this.instance.districtValue);
       }
-      let list = this.cityList;
-      let index = list.findIndex(item => {
-        return item.value == val;
-      });
     }
   },
   methods: {
@@ -129,12 +126,45 @@ export default {
           });
         }
         if (this.type === "edit") {
+          data.id = this.id;
           Address.update(data).then(res => {
             this.$router.push({ name: "all" });
           });
         }
       } else {
         alert("提交内容不能为空，请重新检查");
+      }
+    },
+    remove() {
+      if (window.confirm("确认删除？")) {
+        Address.remove(this.id).then(res => {
+          this.$router.push({ name: "all" });
+        });
+      }
+    },
+    setDefault() {
+      let {
+        name,
+        tel,
+        provinceValue,
+        cityValue,
+        districtValue,
+        address,
+        id
+      } = this;
+      let data = {
+        id,
+        name,
+        tel,
+        provinceValue,
+        cityValue,
+        districtValue,
+        address
+      };
+      if (this.check(data)) {
+        Address.setDefault(data).then(res => {
+          this.$router.push({ name: "all" });
+        });
       }
     },
     check(obj) {
@@ -145,6 +175,16 @@ export default {
         }
       }
       return onoff;
+    }
+  },
+  created() {
+    if (this.type === "edit") {
+      let ad = this.instance;
+      this.name = ad.name;
+      this.id = ad.id;
+      this.tel = ad.tel;
+      this.address = ad.address;
+      this.provinceValue = parseInt(ad.provinceValue);
     }
   }
 };
